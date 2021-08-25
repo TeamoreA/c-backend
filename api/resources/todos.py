@@ -8,15 +8,19 @@ TODOS = {
             'completed': False,
         },
         "e94ks8fc-42cd-436e-b63e-bcb485ad1407":{
-            'task': "?????",
+            'task': "D0 not go to grandma",
             'completed': False,
         },
         "e94aa8fc-42cd-436e-b63e-bjb485ad1407":{
-            'task': "profit!",
+            'task': "Do not make profit!",
             'completed': True,
         },
         "e94aa8fc-42cd-436e-b63e-bcb485ad1407":{
             'task': "Go to market",
+            'completed': False,
+        },
+        "e94aa8fc-42cd-486e-b63e-bcb485ad1407":{
+            'task': "Do not deploy",
             'completed': False,
         },
     }

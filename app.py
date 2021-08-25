@@ -3,8 +3,10 @@ from flask_restful import Api
 from api.resources.hello import Hello
 from api.resources.todos import CompleteTodo, TodoList
 from api.resources.vowels import ReverseVowel
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 
 api.add_resource(TodoList, '/todos')
