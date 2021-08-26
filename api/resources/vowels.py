@@ -4,6 +4,7 @@ from api.common.reverse_vowels import reverse_vowels
 parser = reqparse.RequestParser()
 parser.add_argument('message', required=True, help="Message cannot be blank!")
 
+
 class ReverseVowel(Resource):
     def post(self):
         args = parser.parse_args()
