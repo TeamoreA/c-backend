@@ -27,7 +27,6 @@ class TodoList(Resource):
     def get(self):
         query = datastore_client.query(kind='todos')
         results = list(query.fetch())
-        # TODO
         for res in results:
             res['id'] = res.id
 
@@ -46,5 +45,6 @@ class TodoList(Resource):
             exclude_from_indexes=['task', 'completed'])
         entity.update(todo_data)
         datastore_client.put(entity)
+        todo_data['id'] = entity.id
 
         return todo_data, 201
