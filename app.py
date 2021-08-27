@@ -10,7 +10,7 @@ CORS(app)
 api = Api(app)
 
 api.add_resource(TodoList, '/todos')
-api.add_resource(CompleteTodo, '/todos/<todo_id>/')
+api.add_resource(CompleteTodo, '/todos/<todo_id>')
 api.add_resource(Hello, '/hello')
 api.add_resource(ReverseVowel, '/vowel-service')
 

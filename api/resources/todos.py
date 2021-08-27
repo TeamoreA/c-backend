@@ -1,64 +1,50 @@
-import json
-
+from flask import request
 from flask_restful import Resource, reqparse
+from google.cloud import datastore
 
-TODOS = {
-        "e94ajkdfc-42cd-436e-b63e-bcb485ad1407": {
-            'task': "build an API",
-            'completed': False,
-        },
-        "e94ks8fc-42cd-436e-b63e-bcb485ad1407": {
-            'task': "D0 not go to grandma",
-            'completed': False,
-        },
-        "e94aa8fc-42cd-436e-b63e-bjb485ad1407": {
-            'task': "Do not make profit!",
-            'completed': True,
-        },
-        "e94aa8fc-42cd-436e-b63e-bcb485ad1407": {
-            'task': "Go to market",
-            'completed': False,
-        },
-        "e94aa8fc-42cd-486e-b63e-bcb485ad1407": {
-            'task': "Do not deploy",
-            'completed': False,
-        },
-    }
-
-parser = reqparse.RequestParser()
-parser.add_argument('completed')
-parser.add_argument('todo')
-
+# Instantiates a client
+datastore_client = datastore.Client()
 
 class CompleteTodo(Resource):
     def put(self, todo_id):
-        if todo_id not in TODOS:
-            return {"Error": "Todo not found"}, 400
+        with datastore_client.transaction():
+            try:
+                id = int(todo_id)
+            except Exception:
+                return f"Invalid todo id {todo_id}", 400
+            complete_key = datastore_client.key("todos", id)
+            task = datastore_client.get(key=complete_key)
 
-        TODOS[todo_id]['completed'] = not TODOS[todo_id]['completed']
+            if not task:
+                return f"Task {todo_id} does not exist.", 400
+            task["completed"] = not task["completed"]
+            datastore_client.put(task)
 
-        return TODOS[todo_id], 201
+            return task, 201
 
 
 class TodoList(Resource):
     def get(self):
-        return TODOS
+        query = datastore_client.query(kind='todos')
+        results = list(query.fetch())
+        # TODO
+        for res in results:
+            res['id'] = res.id
+
+        return results
 
     def post(self):
-        args = parser.parse_args()
-        try:
-            todo_data = args['todo'].replace("\'", "\"")
-            todo_data = json.loads(todo_data)
-            todo = list(todo_data.items())
-            todo_id = todo[0][0]
-        except Exception:
-            return {"Error": "Bad data format"}, 400
-        if todo_id in TODOS:
-            return {"Error": "Todo already found"}, 400
-        task = todo[0][1].get('task')
+        todo_data = request.get_json()
+        task = todo_data.get('task')
+
         if task is None or not task.strip():
             return {"Error": "Kindly enter a task"}, 400
-        todo[0][1]['completed'] = False
-        TODOS.update(todo_data)
+        todo_data['completed'] = False
+
+        entity = datastore.Entity(
+            key=datastore_client.key('todos'),
+            exclude_from_indexes=['task', 'completed'])
+        entity.update(todo_data)
+        datastore_client.put(entity)
 
         return todo_data, 201
