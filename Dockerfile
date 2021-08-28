@@ -6,8 +6,6 @@ COPY . /app
 
 ENV FLASK_ENV=production
 
-ENV GOOGLE_APPLICATION_CREDENTIALS=client_credentials.json
-
 RUN pip3 --no-cache-dir install -r requirements.txt
 
 EXPOSE 5000
