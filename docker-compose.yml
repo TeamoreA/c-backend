@@ -9,4 +9,4 @@ services:
       - .:/app
     environment:
       - FLASK_ENV=production
-      - GOOGLE_APPLICATION_CREDENTIALS=cloudkite-interviews-timothy-51415fd2b4fa.json
+      - GOOGLE_APPLICATION_CREDENTIALS=client_credentials.json
