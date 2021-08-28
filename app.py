@@ -9,10 +9,10 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
-api.add_resource(TodoList, '/todos')
-api.add_resource(CompleteTodo, '/todos/<todo_id>')
+api.add_resource(TodoList, '/todo')
+api.add_resource(CompleteTodo, '/todo/<todo_id>')
 api.add_resource(Hello, '/hello')
 api.add_resource(ReverseVowel, '/vowel-service')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
