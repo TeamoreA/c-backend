@@ -7,6 +7,7 @@ from google.cloud import datastore
 # Instantiates a client
 datastore_client = datastore.Client()
 
+
 class CompleteTodo(Resource):
     def put(self, todo_id):
         with datastore_client.transaction():
