@@ -1,5 +1,7 @@
+from datetime import datetime, timezone
+
 from flask import request
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from google.cloud import datastore
 
 # Instantiates a client
@@ -26,6 +28,7 @@ class CompleteTodo(Resource):
 class TodoList(Resource):
     def get(self):
         query = datastore_client.query(kind='todos')
+        query.order = ["-created"]
         results = list(query.fetch())
         for res in results:
             res['id'] = res.id
@@ -38,7 +41,9 @@ class TodoList(Resource):
 
         if task is None or not task.strip():
             return {"Error": "Kindly enter a task"}, 400
+        now = datetime.now(timezone.utc).astimezone()
         todo_data['completed'] = False
+        todo_data['created'] = str(now)
 
         entity = datastore.Entity(
             key=datastore_client.key('todos'),
