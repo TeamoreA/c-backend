@@ -8,4 +8,4 @@ The Application has been documented using Postman Documentation that can be view
 
 ## Deployments
 
-- The project had been deployed to GCP HERE>>. [https://c-backend-kkirjd3lsa-nw.a.run.app](https://c-backend-kkirjd3lsa-nw.a.run.app)
+- The project had been deployed to GCP here>>. [https://c-backend-kkirjd3lsa-nw.a.run.app](https://c-backend-kkirjd3lsa-nw.a.run.app)
